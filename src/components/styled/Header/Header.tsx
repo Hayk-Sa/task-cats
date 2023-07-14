@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../../../app/hooks";
 import {
 	selectCategories,
-	selectCurrentCategory,
+	setCurrentCategory,
 } from "../../../features/counter/counterSlice";
-import { useEffect } from "react";
+
 interface HeaderProps {
 	isShown: boolean;
 	clickHandle?: () => void;
@@ -31,20 +31,10 @@ interface SidebarProps {
 
 const Sidebar = styled.div<SidebarProps>`
 	display: flex;
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 276px;
-	height: 100%;
-	flex-direction: column;
-	padding: 66px 20px;
-	background: #2c2c2c;
-	color: #fff;
-	transition: transform 0.25s ease;
-	will-change: transform;
-	transform: translateX(-100%);
-	overflow-y: auto;
-	z-index: 6;
+	align-items: self-end;
+	background-color: #333;
+	width: 100%;
+	height: 50px;
 	${(props) =>
 		props.isShown
 			? css`
@@ -56,17 +46,23 @@ const Sidebar = styled.div<SidebarProps>`
 
 const Header = ({ isShown, clickHandle }: HeaderProps) => {
 	const categories = useAppSelector(selectCategories);
-	let currentCategoryId = useAppSelector(selectCurrentCategory);
 	const dispatch = useAppDispatch();
-	const categoriesNames = categories?.map((item) => {
-		return <p>{item.name}</p>;
-	});
 
 	return (
 		<NavInner>
 			<Sidebar isShown={true}>
 				<NavLink to="">Home</NavLink>
-				<NavLink to="/category">{categoriesNames}</NavLink>
+				{categories?.map((item) => (
+					<NavLink
+						onClick={() => {
+							dispatch(setCurrentCategory(String(item.id)));
+						}}
+						key={item.id}
+						to={String(item.id)}
+					>
+						{item.name}
+					</NavLink>
+				))}
 			</Sidebar>
 		</NavInner>
 	);

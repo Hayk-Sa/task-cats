@@ -5,6 +5,7 @@ import { CategoryState, ImagesState, IState } from "../types";
 const initialState: IState = {
 	limit: "10",
 	page: "1",
+	currentCategory: undefined,
 };
 
 export const catSlice = createSlice({
@@ -22,7 +23,8 @@ export const catSlice = createSlice({
 		addCategories: (state, action: PayloadAction<CategoryState[]>) => {
 			state.categories = action.payload;
 		},
-		setCurrentCategory: (state, action: PayloadAction<string>) => {
+		setCurrentCategory: (state, action: PayloadAction<string | undefined>) => {
+			state.images = [];
 			state.currentCategory = action.payload;
 		},
 

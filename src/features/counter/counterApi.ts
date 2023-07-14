@@ -14,7 +14,6 @@ export async function fetchImages(
 	const res = await fetch(
 		`${BASE_URL}/images/search?limit=${limit}&page=${page}&category_ids=${categoryIds}`
 	);
-	console.log(res);
 
 	return await res.json();
 }
